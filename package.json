@@ -1,0 +1,22 @@
+{
+  "name": "webpack_code",
+  "version": "1.0.0",
+  "main": "./src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack --mode development"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "webpack": "^5.92.1",
+    "webpack-cli": "^5.1.4"
+  },
+  "devDependencies": {
+    "css-loader": "^7.1.2",
+    "less": "^4.2.0",
+    "less-loader": "^12.2.0",
+    "style-loader": "^4.0.0"
+  }
+}
