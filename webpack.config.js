@@ -1,3 +1,4 @@
+const { type } = require('os');
 const path = require('path'); // node.js的核心模塊，用於處理文件與目錄的路徑
 
 module.exports = {
@@ -9,7 +10,7 @@ module.exports = {
     // __dirname: node.js的全局變量，表示當前文件的目錄絕對路徑
     path: path.resolve(__dirname, "dist"), // 絕對路徑
     // 文件名
-    filename: "main.js",
+    filename: "static/js/main.js",
   },
   // 加載器
   module: {
@@ -27,12 +28,45 @@ module.exports = {
       {
         test: /\.less$/,
         // loader: "less-loader", // 只能使用一個 loader
-        use: [ // 使用多個 loader
+        use: [
+          // 使用多個 loader
           // compiles Less to CSS
           "style-loader",
           "css-loader",
           "less-loader", // 將 less 轉換成 css
         ],
+      },
+      {
+        test: /\.s[ac]ss$/, // 檢查文件是否以.sass或.scss結尾（正則表達式）
+        // loader: "less-loader", // 只能使用一個 loader
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader", // 將 sass 轉換成 css
+        ],
+      },
+      // {
+      //   test: /\.(png|jpe?g|gif|webp)$/i, // 檢查文件是否以.png、.jpg、.jpeg、.gif結尾（正則表達式）
+      //   type: "asset/resource", // 使用 asset 資源模組類型
+      // },
+      {
+        // 依據不同的文件大小，使用不同的打包策略
+        test: /\.(png|jpe?g|gif|webp)$/i, // 檢查文件是否以.png、.jpg、.jpeg、.gif結尾（正則表達式） i: 不區分大小寫
+        type: "asset",
+        generator: {
+          // 輸出圖片的文件名
+          //hash:10 取圖片的 hash 的前 10 位
+          // filename: 'static/images/[hash:10][ext][query]'
+          filename: 'static/images/[name][ext][query]'
+        },
+        parser: {
+          dataUrlCondition: {
+            // 小於 10kb 的圖片轉換成 base64
+            // 優點：減少請求次數（減少請求時間）
+            // 缺點：增加文件體積（文件變大，請求時間變長）
+            maxSize: 10 * 1024, // 10kb
+          },
+        },
       },
     ],
   },
