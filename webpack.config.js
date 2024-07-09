@@ -11,6 +11,9 @@ module.exports = {
     path: path.resolve(__dirname, "dist"), // 絕對路徑
     // 文件名
     filename: "static/js/main.js",
+    // 自動清空上次打包的文件
+    // 原理：每次打包前，先刪除 dist 文件夾，再重新生成
+    clean : true // 清除 dist 文件夾
   },
   // 加載器
   module: {
@@ -53,12 +56,6 @@ module.exports = {
         // 依據不同的文件大小，使用不同的打包策略
         test: /\.(png|jpe?g|gif|webp)$/i, // 檢查文件是否以.png、.jpg、.jpeg、.gif結尾（正則表達式） i: 不區分大小寫
         type: "asset",
-        generator: {
-          // 輸出圖片的文件名
-          //hash:10 取圖片的 hash 的前 10 位
-          // filename: 'static/images/[hash:10][ext][query]'
-          filename: 'static/images/[name][ext][query]'
-        },
         parser: {
           dataUrlCondition: {
             // 小於 10kb 的圖片轉換成 base64
@@ -67,7 +64,29 @@ module.exports = {
             maxSize: 10 * 1024, // 10kb
           },
         },
+        generator: {
+          // 輸出圖片的文件名
+          //hash:10 取圖片的 hash 的前 10 位
+          // filename: 'static/images/[hash:10][ext][query]'
+          filename: 'static/images/[name][ext][query]'
+        },
       },
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i, // 檢查文件是否以.woff2、.woff、.eot、.ttf、.otf結尾（正則表達式）
+        type: "asset/resource", // 使用 asset 資源模組類型
+        generator: {
+          // 輸出字體的文件名
+          filename: 'static/fonts/[name][ext][query]'
+        },
+      },
+      {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/i, // 檢查文件是否以.mp4、.webm、.ogg、.mp3、.wav、.flac、.aac結尾（正則表達式）
+        type: "asset/resource", // 使用 asset 資源模組類型
+        generator: {
+          // 輸出媒體的文件名
+          filename: 'static/media/[name][ext][query]'
+        },
+      }
     ],
   },
   // 插件
